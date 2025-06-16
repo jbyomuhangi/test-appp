@@ -7,6 +7,7 @@ export const POST = async (request) => {
   try {
     const { username } = await request.json();
 
+    /** Check that we have a username */
     if (!username) {
       return NextResponse.json(
         { error: "Username is required" },
@@ -18,6 +19,7 @@ export const POST = async (request) => {
     const lastRequest = requestMap.get(username);
     const timeLimit = 1000 * 10; // 10 seconds
 
+    /** Check that we have not requested a secure word in the last 10 seconds */
     if (lastRequest && timeStamp - lastRequest.issuedAt < timeLimit) {
       return NextResponse.json(
         { error: "Please try again later" },
@@ -25,12 +27,14 @@ export const POST = async (request) => {
       );
     }
 
+    /** Generate a secure word */
     const userNameAndTimeStamp = `${username}${timeStamp}`;
     const secureWord = CryptoJS.HmacSHA256(
       userNameAndTimeStamp,
       SECRET
     ).toString();
 
+    /** Store the secure word in the request map using the username as the key */
     requestMap.set(username, { username, secureWord, issuedAt: timeStamp });
 
     return NextResponse.json({ data: secureWord });
