@@ -1,5 +1,7 @@
+import FlexBox from "@/components/FlexBox";
+
 const Page = () => {
-  return <div>hello world</div>;
+  return <FlexBox>hello world</FlexBox>;
 };
 
 export default Page;
