@@ -1,17 +1,73 @@
+"use client";
+
 import FlexBox from "@/components/FlexBox";
 import { Box, Button, TextField } from "@mui/material";
-import React from "react";
+import CryptoJS from "crypto-js";
+import React, { useState } from "react";
 
-const PasswordStep = ({ onNext }) => {
+const PasswordStep = ({ username, secureWord, onNext }) => {
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const hashedPassword = CryptoJS.SHA256(password).toString();
+
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username,
+          hashedPassword: hashedPassword,
+          secureWord,
+        }),
+      });
+
+      const data = await res.json();
+
+      console.log("data: ", data);
+
+      // if (data) {
+      //   console.log("data", data);
+      //   // onNext();
+      // } else {
+      //   setError(error);
+      // }
+    } catch (error) {
+      setError(error.message || "Undefined error");
+    }
+  };
+
   return (
-    <FlexBox>
-      <Box sx={{ marginBottom: "5px" }}>Enter password:</Box>
-      <TextField size="small" placeholder="Password" sx={{ width: "200px" }} />
+    <Box
+      component="form"
+      sx={{ display: "flex", flexDirection: "column" }}
+      onSubmit={handleSubmit}
+    >
+      <Box component="label" sx={{ marginBottom: "5px", fontWeight: "bold" }}>
+        Enter password:
+      </Box>
 
-      <Button sx={{ marginTop: "10px" }} onClick={onNext}>
+      <TextField
+        size="small"
+        placeholder="Password"
+        type="password"
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
+      />
+
+      {error && (
+        <Box component="p" sx={{ color: "red", marginTop: "5px" }}>
+          {error}
+        </Box>
+      )}
+
+      <Button type="submit" variant="contained" sx={{ marginTop: "40px" }}>
         Next
       </Button>
-    </FlexBox>
+    </Box>
   );
 };
 

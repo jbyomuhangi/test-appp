@@ -15,6 +15,7 @@ const stepsEnum = {
 
 const Page = () => {
   const [step, setStep] = useState(stepsEnum.username);
+  const [username, setUsername] = useState(null);
   const [secureWord, setSecureWord] = useState(null);
 
   return (
@@ -26,7 +27,8 @@ const Page = () => {
       <Card sx={{ padding: "20px", width: "300px" }} elevation={10}>
         {step === stepsEnum.username && (
           <UserNameStep
-            onNext={(secureWord) => {
+            onNext={({ username, secureWord }) => {
+              setUsername(username);
               setSecureWord(secureWord);
               setStep(stepsEnum.secureWordDisplay);
             }}
@@ -41,7 +43,11 @@ const Page = () => {
         )}
 
         {step === stepsEnum.password && (
-          <PasswordStep onNext={() => setStep(stepsEnum.success)} />
+          <PasswordStep
+            username={username}
+            secureWord={secureWord}
+            onNext={() => setStep(stepsEnum.success)}
+          />
         )}
       </Card>
     </FlexBox>

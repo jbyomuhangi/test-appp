@@ -1,8 +1,7 @@
+import requestMap from "@/app/api/requestsMap";
 import { SECRET } from "@/settings";
 import CryptoJS from "crypto-js";
 import { NextResponse } from "next/server";
-
-const requestMap = new Map();
 
 export const POST = async (request) => {
   try {

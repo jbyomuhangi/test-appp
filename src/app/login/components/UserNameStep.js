@@ -10,8 +10,6 @@ const UserNameStep = ({ onNext }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log("aaaaa");
-
     try {
       const res = await fetch("/api/getSecureWord", {
         method: "POST",
@@ -22,7 +20,7 @@ const UserNameStep = ({ onNext }) => {
       const { data, error } = await res.json();
 
       if (data) {
-        onNext(data);
+        onNext({ username, secureWord: data });
       } else {
         setError(error);
       }
@@ -37,7 +35,7 @@ const UserNameStep = ({ onNext }) => {
       sx={{ display: "flex", flexDirection: "column" }}
       onSubmit={handleSubmit}
     >
-      <Box component="label" sx={{ marginBottom: "5px" }}>
+      <Box component="label" sx={{ marginBottom: "5px", fontWeight: "bold" }}>
         Enter username:
       </Box>
 

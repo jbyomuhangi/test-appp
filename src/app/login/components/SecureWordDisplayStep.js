@@ -16,6 +16,18 @@ const SecureWordDisplayStep = ({ secureWord, onNext }) => {
         {secureWord}
       </Box>
 
+      <Box
+        component="p"
+        sx={{
+          fontSize: "1rem",
+          fontWeight: "bold",
+          marginTop: "10px",
+          color: "red",
+        }}
+      >
+        This secure word will expire in 60 seconds
+      </Box>
+
       <Button variant="contained" sx={{ marginTop: "20px" }} onClick={onNext}>
         Next
       </Button>
