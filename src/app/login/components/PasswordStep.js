@@ -25,16 +25,14 @@ const PasswordStep = ({ username, secureWord, onNext }) => {
         }),
       });
 
-      const data = await res.json();
+      const { data, error } = await res.json();
 
-      console.log("data: ", data);
-
-      // if (data) {
-      //   console.log("data", data);
-      //   // onNext();
-      // } else {
-      //   setError(error);
-      // }
+      if (data) {
+        console.log("data", data);
+        // onNext();
+      } else {
+        setError(error);
+      }
     } catch (error) {
       setError(error.message || "Undefined error");
     }

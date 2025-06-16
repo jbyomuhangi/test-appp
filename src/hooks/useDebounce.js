@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { empty } from "@/utils/noOpUtils";
 import useValueRef from "./useValueRef";
 
-const useDebounce = ({ func = empty, delay = 1000 } = {}) => {
+const useDebounce = ({ delay = 1000, func = empty }) => {
   const timer = useRef();
   const funcRef = useValueRef(func);
 

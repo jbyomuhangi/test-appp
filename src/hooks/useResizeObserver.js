@@ -3,16 +3,12 @@ import { useEffect, useRef } from "react";
 import { empty } from "@/utils/noOpUtils";
 import useValueRef from "./useValueRef";
 
-const useResizeObserver = ({
-  ref: customRef,
-  ignoreResize = false,
-  callback = empty,
-} = {}) => {
+const useResizeObserver = ({ ignoreResize = false, callback = empty }) => {
   const ref = useRef();
   const callbackRef = useValueRef(callback);
 
   useEffect(() => {
-    const element = customRef?.current || ref?.current;
+    const element = ref.current;
     if (!element) return;
     if (ignoreResize) return;
 
@@ -25,9 +21,9 @@ const useResizeObserver = ({
     return () => {
       observer.disconnect();
     };
-  }, [ref, customRef, callbackRef, ignoreResize]);
+  }, [ref, callbackRef, ignoreResize]);
 
-  return customRef || ref;
+  return ref;
 };
 
 export default useResizeObserver;
