@@ -31,6 +31,7 @@ export const POST = async (request) => {
 
     /** Check that the secure word is not expired (60 seconds is the limit) */
     if (now - lastRequest.issuedAt > timeLimit) {
+      requestMap.delete(username);
       return NextResponse.json(
         { error: "The secure word is expired" },
         { status: 400 }
