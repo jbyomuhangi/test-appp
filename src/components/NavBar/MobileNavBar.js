@@ -6,12 +6,10 @@ import useResizeObserver from "@/hooks/useResizeObserver";
 import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import { Box, ButtonBase, useTheme } from "@mui/material";
+import { ButtonBase, useTheme } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
-import { usePathname } from "next/navigation";
 import { useState } from "react";
 import LinkBase from "../LinkBase";
-import NavButton from "./NavButton";
 import TitleButton from "./TitleButton";
 
 const styles = {
@@ -29,7 +27,6 @@ const styles = {
 
 const MobileNavBar = ({ routes }) => {
   const theme = useTheme();
-  const pathname = usePathname();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [appBarHeight, setAppBarHeight] = useState(0);

@@ -1,7 +1,7 @@
 "use client";
 
 import FlexBox from "@/components/FlexBox";
-import { Button } from "@mui/material";
+import { Button, Card } from "@mui/material";
 import React, { useState } from "react";
 import PasswordStep from "./components/PasswordStep";
 import SecureWordDisplayStep from "./components/SecureWordDisplayStep";
@@ -15,6 +15,7 @@ const stepsEnum = {
 
 const Page = () => {
   const [step, setStep] = useState(stepsEnum.username);
+  const [secureWord, setSecureWord] = useState(null);
 
   return (
     <FlexBox
@@ -22,9 +23,27 @@ const Page = () => {
         sx: { flex: 1, alignItems: "center", justifyContent: "center" },
       }}
     >
-      {step === stepsEnum.username && <UserNameStep />}
-      {step === stepsEnum.password && <PasswordStep />}
-      {step === stepsEnum.secureWordDisplay && <SecureWordDisplayStep />}
+      <Card sx={{ padding: "20px", width: "300px" }} elevation={10}>
+        {step === stepsEnum.username && (
+          <UserNameStep
+            onNext={(secureWord) => {
+              setSecureWord(secureWord);
+              setStep(stepsEnum.secureWordDisplay);
+            }}
+          />
+        )}
+
+        {step === stepsEnum.secureWordDisplay && (
+          <SecureWordDisplayStep
+            secureWord={secureWord}
+            onNext={() => setStep(stepsEnum.password)}
+          />
+        )}
+
+        {step === stepsEnum.password && (
+          <PasswordStep onNext={() => setStep(stepsEnum.success)} />
+        )}
+      </Card>
     </FlexBox>
   );
 };

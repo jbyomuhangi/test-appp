@@ -1,13 +1,63 @@
-import FlexBox from "@/components/FlexBox";
-import { Box, TextField } from "@mui/material";
-import React from "react";
+"use client";
 
-const UserNameStep = () => {
+import { Box, Button, TextField } from "@mui/material";
+import React, { useState } from "react";
+
+const UserNameStep = ({ onNext }) => {
+  const [username, setUsername] = useState("");
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    console.log("aaaaa");
+
+    try {
+      const res = await fetch("/api/getSecureWord", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username }),
+      });
+
+      const { data, error } = await res.json();
+
+      if (data) {
+        onNext(data);
+      } else {
+        setError(error);
+      }
+    } catch (error) {
+      setError(error.message || "Undefined error");
+    }
+  };
+
   return (
-    <FlexBox>
-      <Box sx={{ marginBottom: "5px" }}>Enter username:</Box>
-      <TextField size="small" placeholder="Username" sx={{ width: "200px" }} />
-    </FlexBox>
+    <Box
+      component="form"
+      sx={{ display: "flex", flexDirection: "column" }}
+      onSubmit={handleSubmit}
+    >
+      <Box component="label" sx={{ marginBottom: "5px" }}>
+        Enter username:
+      </Box>
+
+      <TextField
+        size="small"
+        placeholder="Username"
+        value={username}
+        onChange={(event) => setUsername(event.target.value)}
+      />
+
+      {error && (
+        <Box component="p" sx={{ color: "red", marginTop: "5px" }}>
+          {error}
+        </Box>
+      )}
+
+      <Button type="submit" variant="contained" sx={{ marginTop: "40px" }}>
+        Next
+      </Button>
+    </Box>
   );
 };
 
