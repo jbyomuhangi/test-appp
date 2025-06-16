@@ -1,7 +1,8 @@
 import FlexBox from "@/components/FlexBox";
+import React from "react";
 
 const Page = () => {
-  return <FlexBox>Home page</FlexBox>;
+  return <FlexBox>Login Page</FlexBox>;
 };
 
 export default Page;

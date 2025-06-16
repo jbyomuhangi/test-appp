@@ -1,3 +1,4 @@
+import NavBar from "@/components/NavBar";
 import theme from "@/theme";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -27,7 +28,11 @@ const RootLayout = ({ children }) => {
         <NextTopLoader />
 
         <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <NavBar />
+
+            {children}
+          </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
