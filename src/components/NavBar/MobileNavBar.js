@@ -1,11 +1,17 @@
 "use client";
 
 import FlexBox from "@/components/FlexBox";
+import useDebounce from "@/hooks/useDebounce";
+import useResizeObserver from "@/hooks/useResizeObserver";
+import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
-import { ButtonBase } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import { Box, ButtonBase, useTheme } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
-import PageLinks from "./PageLinks";
+import LinkBase from "../LinkBase";
+import NavButton from "./NavButton";
 import TitleButton from "./TitleButton";
 
 const styles = {
@@ -17,26 +23,90 @@ const styles = {
     padding: "10px",
     borderBottom: "1px solid #e0e0e0",
     boxShadow: "0 1px 2px rgba(0,0,0,0.1)",
+    backgroundColor: "white",
   },
 };
 
-const MobileNavBar = () => {
+const MobileNavBar = ({ routes }) => {
+  const theme = useTheme();
+  const pathname = usePathname();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [appBarHeight, setAppBarHeight] = useState(0);
+
+  const debouncedSetAppBarHeight = useDebounce({
+    func: (element) => {
+      setAppBarHeight(element.clientHeight);
+    },
+    delay: 100,
+  });
+
+  const ref = useResizeObserver({ callback: debouncedSetAppBarHeight });
 
   return (
-    <FlexBox BoxProps={{ sx: styles.mavBarContainer }}>
-      <TitleButton />
+    <>
+      <FlexBox
+        BoxProps={{
+          ref,
+          sx: {
+            position: "relative",
+            zIndex: theme.zIndex.drawer + 1,
+            ...styles.mavBarContainer,
+          },
+        }}
+      >
+        <TitleButton />
 
-      <ButtonBase onClick={() => setIsMenuOpen(true)}>
-        <MenuIcon />
-      </ButtonBase>
+        <FlexBox
+          BoxProps={{
+            sx: { flexDirection: "row", gap: "10px", alignItems: "center" },
+          }}
+        >
+          <ButtonBase>
+            <SearchIcon />
+          </ButtonBase>
 
-      <Drawer open={isMenuOpen} onClose={() => setIsMenuOpen(false)}>
-        <FlexBox>
-          <PageLinks />
+          <ButtonBase onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
+          </ButtonBase>
+        </FlexBox>
+      </FlexBox>
+
+      <Drawer
+        open={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        slotProps={{ paper: { sx: { width: "100%" } } }}
+      >
+        <FlexBox
+          BoxProps={{
+            sx: {
+              padding: `${appBarHeight + 10}px 10px 10px 10px`,
+              width: "100%",
+              gap: "10px",
+            },
+          }}
+        >
+          {routes.map((route) => {
+            return (
+              <LinkBase
+                key={route.href}
+                href={route.href}
+                LinkProps={{ onClick: () => setIsMenuOpen(false) }}
+              >
+                {route.label}
+              </LinkBase>
+            );
+          })}
+
+          <LinkBase
+            href="/login"
+            LinkProps={{ onClick: () => setIsMenuOpen(false) }}
+          >
+            Login
+          </LinkBase>
         </FlexBox>
       </Drawer>
-    </FlexBox>
+    </>
   );
 };
 

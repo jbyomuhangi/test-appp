@@ -1,7 +1,8 @@
 import FlexBox from "@/components/FlexBox";
 import LinkBase from "@/components/LinkBase";
 import { TextField } from "@mui/material";
-import PageLinks from "./PageLinks";
+import { usePathname } from "next/navigation";
+import NavButton from "./NavButton";
 import TitleButton from "./TitleButton";
 
 const styles = {
@@ -28,13 +29,23 @@ const styles = {
   },
 };
 
-const DesktopNavBar = () => {
+const DesktopNavBar = ({ routes }) => {
+  const pathname = usePathname();
+
   return (
     <FlexBox BoxProps={{ sx: styles.mavBarContainer }}>
       <TitleButton />
 
       <FlexBox BoxProps={{ sx: styles.routesContainer }}>
-        <PageLinks />
+        {routes.map((route) => {
+          const isSelected = pathname.startsWith(route.href);
+
+          return (
+            <LinkBase key={route.href} href={route.href}>
+              <NavButton isSelected={isSelected}>{route.label}</NavButton>
+            </LinkBase>
+          );
+        })}
       </FlexBox>
 
       <FlexBox BoxProps={{ sx: styles.rightContainer }}>

@@ -1,3 +1,4 @@
+import { emptyObject } from "@/utils/noOpUtils";
 import { ButtonBase } from "@mui/material";
 import React from "react";
 
@@ -14,13 +15,17 @@ const styles = {
   },
 };
 
-const NavButton = ({ children, isSelected }) => {
+const NavButton = ({ children, isSelected, ButtonProps = emptyObject }) => {
+  const { sx = emptyObject, ...otherButtonProps } = ButtonProps;
+
   return (
     <ButtonBase
       sx={{
         ...styles.navButtonContainer,
         ...(isSelected && styles.selectedNavButtonContainer),
+        ...sx,
       }}
+      {...otherButtonProps}
     >
       {children}
     </ButtonBase>
