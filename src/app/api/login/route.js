@@ -1,4 +1,4 @@
-import requestMap from "@/app/api/requestsMap";
+import secureWordCache from "@/secureWordCache";
 import { SECRET } from "@/settings";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
@@ -13,7 +13,7 @@ export const POST = async (request) => {
     }
 
     /** Check that we have a secure word in the request map */
-    const lastRequest = requestMap.get(username);
+    const lastRequest = secureWordCache.get(username);
     if (!lastRequest) {
       return NextResponse.json({ error: "Bad request" }, { status: 400 });
     }
@@ -31,7 +31,7 @@ export const POST = async (request) => {
 
     /** Check that the secure word is not expired (60 seconds is the limit) */
     if (now - lastRequest.issuedAt > timeLimit) {
-      requestMap.delete(username);
+      secureWordCache.delete(username);
       return NextResponse.json(
         { error: "The secure word is expired" },
         { status: 400 }

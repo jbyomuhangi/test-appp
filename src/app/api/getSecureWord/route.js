@@ -1,4 +1,4 @@
-import requestMap from "@/app/api/requestsMap";
+import secureWordCache from "@/secureWordCache";
 import { SECRET } from "@/settings";
 import CryptoJS from "crypto-js";
 import { NextResponse } from "next/server";
@@ -16,7 +16,7 @@ export const POST = async (request) => {
     }
 
     const timeStamp = Date.now();
-    const lastRequest = requestMap.get(username);
+    const lastRequest = secureWordCache.get(username);
     const timeLimit = 1000 * 10; // 10 seconds
 
     /** Check that we have not requested a secure word in the last 10 seconds */
@@ -35,7 +35,11 @@ export const POST = async (request) => {
     ).toString();
 
     /** Store the secure word in the request map using the username as the key */
-    requestMap.set(username, { username, secureWord, issuedAt: timeStamp });
+    secureWordCache.set(username, {
+      username,
+      secureWord,
+      issuedAt: timeStamp,
+    });
 
     return NextResponse.json({ data: secureWord });
   } catch {
