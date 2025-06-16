@@ -3,6 +3,7 @@
 import FlexBox from "@/components/FlexBox";
 import { Button, Card } from "@mui/material";
 import React, { useState } from "react";
+import MfaStep from "./components/MfaStep";
 import PasswordStep from "./components/PasswordStep";
 import SecureWordDisplayStep from "./components/SecureWordDisplayStep";
 import UserNameStep from "./components/UserNameStep";
@@ -11,6 +12,7 @@ const stepsEnum = {
   username: "username",
   secureWordDisplay: "secureWordDisplay",
   password: "password",
+  mfa: "mfa",
 };
 
 const Page = () => {
@@ -46,7 +48,15 @@ const Page = () => {
           <PasswordStep
             username={username}
             secureWord={secureWord}
-            onNext={() => setStep(stepsEnum.success)}
+            onNext={() => setStep(stepsEnum.mfa)}
+          />
+        )}
+
+        {step === stepsEnum.mfa && (
+          <MfaStep
+            username={username}
+            // secureWord={secureWord}
+            // onNext={() => setStep(stepsEnum.success)}
           />
         )}
       </Card>

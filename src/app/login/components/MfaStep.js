@@ -1,34 +1,26 @@
 "use client";
 
-import FlexBox from "@/components/FlexBox";
 import { Box, Button, TextField } from "@mui/material";
-import CryptoJS from "crypto-js";
 import React, { useState } from "react";
 
-const PasswordStep = ({ username, secureWord, onNext }) => {
-  const [password, setPassword] = useState("");
+const MfaStep = ({ username, onNext }) => {
+  const [otp, setOtp] = useState("");
   const [error, setError] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const hashedPassword = CryptoJS.SHA256(password).toString();
-
-      const res = await fetch("/api/login", {
+      const res = await fetch("/api/verifyMfa", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username,
-          hashedPassword: hashedPassword,
-          secureWord,
-        }),
+        body: JSON.stringify({ username, code: otp }),
       });
 
       const { data, error } = await res.json();
 
       if (data) {
-        onNext();
+        console.log("?????", data);
       } else {
         setError(error);
       }
@@ -44,15 +36,17 @@ const PasswordStep = ({ username, secureWord, onNext }) => {
       onSubmit={handleSubmit}
     >
       <Box component="label" sx={{ marginBottom: "5px", fontWeight: "bold" }}>
-        Enter password:
+        Enter OTP:
       </Box>
 
       <TextField
         size="small"
-        placeholder="Password"
-        type="password"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
+        placeholder="OTP"
+        value={otp}
+        onChange={(event) => {
+          if (event.target.value.length > 6) return;
+          setOtp(event.target.value);
+        }}
       />
 
       {error && (
@@ -68,4 +62,4 @@ const PasswordStep = ({ username, secureWord, onNext }) => {
   );
 };
 
-export default PasswordStep;
+export default MfaStep;
