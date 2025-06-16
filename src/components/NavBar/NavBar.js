@@ -2,6 +2,8 @@
 
 import FlexBox from "@/components/FlexBox";
 import LinkBase from "@/components/LinkBase";
+import { TextField } from "@mui/material";
+import { flexDirection } from "@mui/system";
 import { usePathname } from "next/navigation";
 import React, { useMemo } from "react";
 import NavButton from "./NavButton";
@@ -20,6 +22,13 @@ const styles = {
     alignItems: "center",
     flexDirection: "row",
     gap: "10px",
+  },
+
+  rightContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: "20px",
+    marginLeft: "auto",
   },
 };
 
@@ -59,9 +68,15 @@ const NavBar = () => {
         })}
       </FlexBox>
 
-      <LinkBase href="/login" LinkProps={{ style: { marginLeft: "auto" } }}>
-        Login
-      </LinkBase>
+      <FlexBox BoxProps={{ sx: styles.rightContainer }}>
+        <TextField
+          size="small"
+          placeholder="Search..."
+          sx={{ width: "200px", marginLeft: "auto" }}
+        />
+
+        <LinkBase href="/login">Login</LinkBase>
+      </FlexBox>
     </FlexBox>
   );
 };
