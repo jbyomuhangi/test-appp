@@ -1,6 +1,6 @@
 "use client";
 
-import NavBar from "@/components/NavBar";
+import UnauthenticatedNavBar from "@/components/NavBar/UnauthenticatedNavBar";
 import { redirect } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -21,8 +21,7 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      <NavBar />
-
+      <UnauthenticatedNavBar />
       {children}
     </>
   );

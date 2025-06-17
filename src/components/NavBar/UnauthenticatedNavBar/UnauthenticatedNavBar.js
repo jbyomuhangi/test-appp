@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import DesktopNavBar from "./DesktopNavBar";
 import MobileNavBar from "./MobileNavBar";
 
-const NavBar = () => {
+const UnauthenticatedNavBar = () => {
   const isMobile = useIsMobile();
 
   const routes = useMemo(() => {
@@ -29,4 +29,4 @@ const NavBar = () => {
   return <DesktopNavBar routes={routes} />;
 };
 
-export default NavBar;
+export default UnauthenticatedNavBar;

@@ -1,5 +1,6 @@
 "use client";
 
+import AuthenticateNavBar from "@/components/NavBar/AuthenticateNavBar";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -17,7 +18,12 @@ const Layout = ({ children }) => {
   }, []);
 
   if (!showComponent) return null;
-  return <>{children}</>;
+  return (
+    <>
+      <AuthenticateNavBar />
+      {children}
+    </>
+  );
 };
 
 export default Layout;

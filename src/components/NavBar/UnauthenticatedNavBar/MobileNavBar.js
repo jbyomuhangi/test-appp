@@ -1,6 +1,7 @@
 "use client";
 
 import FlexBox from "@/components/FlexBox";
+import LinkBase from "@/components/LinkBase";
 import useDebounce from "@/hooks/useDebounce";
 import useResizeObserver from "@/hooks/useResizeObserver";
 import CloseIcon from "@mui/icons-material/Close";
@@ -9,7 +10,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Box, Button, ButtonBase, useTheme } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import { useState } from "react";
-import LinkBase from "../LinkBase";
 import TitleButton from "./TitleButton";
 
 const styles = {
