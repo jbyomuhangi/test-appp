@@ -1,4 +1,4 @@
-import secureWordCache from "@/secureWordCache";
+import { secureWordCache } from "@/caches";
 import { SECRET, SECURE_WORD_EXPIRATION_TIME_IN_SECONDS } from "@/settings";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";

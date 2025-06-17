@@ -1,4 +1,4 @@
-import mfaCache from "@/mfaCache";
+import { mfaCache } from "@/caches";
 import { OTP_EXPIRATION_TIME_IN_SECONDS, SECRET } from "@/settings";
 import CryptoJS from "crypto-js";
 import { NextResponse } from "next/server";

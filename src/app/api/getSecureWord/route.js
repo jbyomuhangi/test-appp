@@ -1,4 +1,4 @@
-import secureWordCache from "@/secureWordCache";
+import { secureWordCache } from "@/caches";
 import { SECRET, SECURE_WORD_REQUEST_RATE_LIMIT_IN_SECONDS } from "@/settings";
 import CryptoJS from "crypto-js";
 import { NextResponse } from "next/server";

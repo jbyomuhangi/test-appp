@@ -41,18 +41,8 @@ const Page = () => {
     if (shouldStopCountdown) setSecureWordTimeout(null);
   }, [secureWordTimeout, step]);
 
-  /** This is just so that our api routes are "warm" and our cache can be populated with data */
+  /** Attempt to "warm" our api routes */
   useEffect(() => {
-    fetch("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: "test",
-        hashedPassword: "test",
-        secureWord: "test",
-      }),
-    }).catch(() => {});
-
     fetch("/api/verifyMfa", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
