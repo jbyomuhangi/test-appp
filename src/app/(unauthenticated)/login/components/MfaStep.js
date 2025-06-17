@@ -2,8 +2,8 @@
 
 import { OPT_EXPIRATION_TIME_IN_SECONDS } from "@/settings";
 import { Box, Button, TextField } from "@mui/material";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 import { useInterval, useMount } from "react-use";
 
 const MfaStep = ({ username, onNext }) => {

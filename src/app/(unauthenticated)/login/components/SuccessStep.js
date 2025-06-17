@@ -1,12 +1,10 @@
 "use client";
 
-import { Box, Button, TextField } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
+import { Box } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useTimeout, useTimeoutFn } from "react-use";
+import { useTimeoutFn } from "react-use";
 
-const SuccessStep = ({ onNext }) => {
+const SuccessStep = () => {
   const router = useRouter();
 
   useTimeoutFn(() => {
@@ -15,7 +13,6 @@ const SuccessStep = ({ onNext }) => {
 
   return (
     <Box>
-      erre
       <Box
         component="p"
         sx={{

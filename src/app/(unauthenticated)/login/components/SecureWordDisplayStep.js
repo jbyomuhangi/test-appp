@@ -3,7 +3,7 @@
 import FlexBox from "@/components/FlexBox";
 import { SECURE_WORD_EXPIRATION_TIME_IN_SECONDS } from "@/settings";
 import { Box, Button } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useInterval } from "react-use";
 
 const SecureWordDisplayStep = ({ secureWord, onNext }) => {

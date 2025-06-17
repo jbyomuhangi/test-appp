@@ -1,10 +1,9 @@
 "use client";
 
-import FlexBox from "@/components/FlexBox";
 import { Box, Button, TextField } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import CryptoJS from "crypto-js";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const PasswordStep = ({ username, secureWord, onNext }) => {
   const [password, setPassword] = useState("");

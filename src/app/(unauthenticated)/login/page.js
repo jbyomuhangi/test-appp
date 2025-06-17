@@ -1,8 +1,8 @@
 "use client";
 
 import FlexBox from "@/components/FlexBox";
-import { Button, Card } from "@mui/material";
-import React, { useState } from "react";
+import { Card } from "@mui/material";
+import { useState } from "react";
 import MfaStep from "./components/MfaStep";
 import PasswordStep from "./components/PasswordStep";
 import SecureWordDisplayStep from "./components/SecureWordDisplayStep";
