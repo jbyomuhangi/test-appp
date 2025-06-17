@@ -1,15 +1,18 @@
 "use client";
 
 import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
 const Page = () => {
-  const token = localStorage.getItem("token");
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
-  if (token) {
-    redirect("/dashboard");
-  } else {
-    redirect("/home");
-  }
+    if (token) {
+      redirect("/dashboard");
+    } else {
+      redirect("/home");
+    }
+  }, []);
 
   return null;
 };
