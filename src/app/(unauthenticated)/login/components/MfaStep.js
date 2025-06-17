@@ -12,10 +12,10 @@ const MfaStep = ({ username, onNext }) => {
   const [otpInput, setOtpInput] = useState("");
   const [error, setError] = useState(null);
 
-  const createOptMutation = useMutation({
+  const createOtpMutation = useMutation({
     mutationFn: async ({ username }) => {
       console.log("running mutation.....");
-      const res = await fetch("/api/createOpt", {
+      const res = await fetch("/api/createOtp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username }),
@@ -61,12 +61,12 @@ const MfaStep = ({ username, onNext }) => {
 
   /** Create an OTP on mount */
   useMount(() => {
-    createOptMutation.mutate({ username });
+    createOtpMutation.mutate({ username });
   });
 
   /** Create a new OTP every OTP_EXPIRATION_TIME_IN_SECONDS */
   useInterval(() => {
-    createOptMutation.mutate({ username });
+    createOtpMutation.mutate({ username });
   }, 1000 * OTP_EXPIRATION_TIME_IN_SECONDS);
 
   const handleSubmit = (event) => {
