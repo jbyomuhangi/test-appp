@@ -64,15 +64,20 @@ const MfaStep = ({ username, onNext, onRetry }) => {
     },
   });
 
+  const isAttemptLimitReached = error === "Attempt limit reached";
+
   /** Create an OTP on mount */
   useMount(() => {
     createOtpMutation.mutate({ username });
   });
 
   /** Create a new OTP every OTP_EXPIRATION_TIME_IN_SECONDS */
-  useInterval(() => {
-    createOtpMutation.mutate({ username });
-  }, 1000 * OTP_EXPIRATION_TIME_IN_SECONDS);
+  useInterval(
+    () => {
+      createOtpMutation.mutate({ username });
+    },
+    isAttemptLimitReached ? null : 1000 * OTP_EXPIRATION_TIME_IN_SECONDS
+  );
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -80,8 +85,6 @@ const MfaStep = ({ username, onNext, onRetry }) => {
 
     verifyMfaMutation.mutate({ username, code: otpInput });
   };
-
-  const isAttemptLimitReached = error === "Attempt limit reached";
 
   return (
     <Box
