@@ -1,6 +1,6 @@
 import FlexBox from "@/components/FlexBox";
 import LinkBase from "@/components/LinkBase";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { usePathname } from "next/navigation";
 import NavButton from "./NavButton";
 import TitleButton from "./TitleButton";
@@ -55,7 +55,9 @@ const DesktopNavBar = ({ routes }) => {
           sx={{ width: "200px", marginLeft: "auto" }}
         />
 
-        <LinkBase href="/login">Login</LinkBase>
+        <LinkBase href="/login">
+          <Button variant="contained">Login</Button>
+        </LinkBase>
       </FlexBox>
     </FlexBox>
   );

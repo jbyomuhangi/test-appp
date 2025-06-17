@@ -6,7 +6,7 @@ import useResizeObserver from "@/hooks/useResizeObserver";
 import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import { ButtonBase, useTheme } from "@mui/material";
+import { Box, Button, ButtonBase, useTheme } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import { useState } from "react";
 import LinkBase from "../LinkBase";
@@ -78,7 +78,6 @@ const MobileNavBar = ({ routes }) => {
           BoxProps={{
             sx: {
               padding: `${appBarHeight + 10}px 10px 10px 10px`,
-              width: "100%",
               gap: "10px",
             },
           }}
@@ -95,12 +94,16 @@ const MobileNavBar = ({ routes }) => {
             );
           })}
 
-          <LinkBase
-            href="/login"
-            LinkProps={{ onClick: () => setIsMenuOpen(false) }}
-          >
-            Login
-          </LinkBase>
+          <Box sx={{ marginTop: "20px" }}>
+            <LinkBase
+              href="/login"
+              LinkProps={{ onClick: () => setIsMenuOpen(false) }}
+            >
+              <Button variant="contained" sx={{ width: "100%" }}>
+                Login
+              </Button>
+            </LinkBase>
+          </Box>
         </FlexBox>
       </Drawer>
     </>
