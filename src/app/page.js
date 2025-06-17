@@ -1,7 +1,17 @@
-import FlexBox from "@/components/FlexBox";
+"use client";
+
+import { redirect } from "next/navigation";
 
 const Page = () => {
-  return <FlexBox>Home page</FlexBox>;
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    redirect("/dashboard");
+  } else {
+    redirect("/home");
+  }
+
+  return null;
 };
 
 export default Page;
