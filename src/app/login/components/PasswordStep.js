@@ -2,6 +2,7 @@
 
 import FlexBox from "@/components/FlexBox";
 import { Box, Button, TextField } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 import CryptoJS from "crypto-js";
 import React, { useState } from "react";
 
@@ -9,32 +10,39 @@ const PasswordStep = ({ username, secureWord, onNext }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      const hashedPassword = CryptoJS.SHA256(password).toString();
-
+  const passwordMutation = useMutation({
+    mutationFn: async (hashedPassword) => {
       const res = await fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           username,
-          hashedPassword: hashedPassword,
+          hashedPassword,
           secureWord,
         }),
       });
 
       const { data, error } = await res.json();
+      if (error) throw new Error(error);
 
-      if (data) {
-        onNext();
-      } else {
-        setError(error);
-      }
-    } catch (error) {
+      return data;
+    },
+
+    onSuccess: () => {
+      onNext();
+    },
+
+    onError: (error) => {
       setError(error.message || "Undefined error");
-    }
+    },
+  });
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (passwordMutation.isPending) return;
+
+    const hashedPassword = CryptoJS.SHA256(password).toString();
+    passwordMutation.mutate(hashedPassword);
   };
 
   return (
