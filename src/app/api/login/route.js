@@ -1,5 +1,5 @@
 import secureWordCache from "@/secureWordCache";
-import { SECRET } from "@/settings";
+import { SECRET, SECURE_WORD_EXPIRATION_TIME_IN_SECONDS } from "@/settings";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 
@@ -27,9 +27,9 @@ export const POST = async (request) => {
     }
 
     const now = Date.now();
-    const timeLimit = 1000 * 60; // 60 seconds
+    const timeLimit = 1000 * SECURE_WORD_EXPIRATION_TIME_IN_SECONDS;
 
-    /** Check that the secure word is not expired (60 seconds is the limit) */
+    /** Check that the secure word is not expired */
     if (now - lastRequest.issuedAt > timeLimit) {
       secureWordCache.delete(username);
       return NextResponse.json(

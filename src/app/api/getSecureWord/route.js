@@ -1,5 +1,5 @@
 import secureWordCache from "@/secureWordCache";
-import { SECRET } from "@/settings";
+import { SECRET, SECURE_WORD_REQUEST_RATE_LIMIT_IN_SECONDS } from "@/settings";
 import CryptoJS from "crypto-js";
 import { NextResponse } from "next/server";
 
@@ -17,9 +17,9 @@ export const POST = async (request) => {
 
     const timeStamp = Date.now();
     const lastRequest = secureWordCache.get(username);
-    const timeLimit = 1000 * 10; // 10 seconds
+    const timeLimit = 1000 * SECURE_WORD_REQUEST_RATE_LIMIT_IN_SECONDS;
 
-    /** Check that we have not requested a secure word in the last 10 seconds */
+    /** Check that we have not hit our rate limit for requests yet since the last request */
     if (lastRequest && timeStamp - lastRequest.issuedAt < timeLimit) {
       return NextResponse.json(
         { error: "Please try again later" },

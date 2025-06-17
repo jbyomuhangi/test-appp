@@ -26,7 +26,8 @@
     "next": "15.3.3",
     "nextjs-toploader": "^3.8.16",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-use": "^17.6.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
