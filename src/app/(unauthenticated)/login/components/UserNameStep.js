@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
@@ -51,6 +51,7 @@ const UserNameStep = ({ onNext }) => {
       <TextField
         size="small"
         placeholder="Username"
+        disabled={userNameMutation.isPending}
         value={username}
         onChange={(event) => setUsername(event.target.value)}
       />
@@ -61,9 +62,21 @@ const UserNameStep = ({ onNext }) => {
         </Box>
       )}
 
-      <Button type="submit" variant="contained" sx={{ marginTop: "40px" }}>
-        Next
-      </Button>
+      <Box
+        sx={{ marginTop: "40px", display: "flex", justifyContent: "center" }}
+      >
+        {userNameMutation.isPending && (
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <CircularProgress />
+          </Box>
+        )}
+
+        {!userNameMutation.isPending && (
+          <Button type="submit" variant="contained">
+            Next
+          </Button>
+        )}
+      </Box>
     </Box>
   );
 };

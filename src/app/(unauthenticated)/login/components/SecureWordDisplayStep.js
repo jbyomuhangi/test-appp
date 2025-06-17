@@ -45,9 +45,13 @@ const SecureWordDisplayStep = ({ secureWord, onNext }) => {
         {timeLeft < 1 && "This secure word has expired"}
       </Box>
 
-      <Button variant="contained" sx={{ marginTop: "20px" }} onClick={onNext}>
-        Next
-      </Button>
+      <Box
+        sx={{ marginTop: "40px", display: "flex", justifyContent: "center" }}
+      >
+        <Button variant="contained" onClick={onNext}>
+          Next
+        </Button>
+      </Box>
     </FlexBox>
   );
 };

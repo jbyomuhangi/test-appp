@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import CryptoJS from "crypto-js";
 import { useState } from "react";
@@ -58,6 +58,7 @@ const PasswordStep = ({ username, secureWord, onNext }) => {
         size="small"
         placeholder="Password"
         type="password"
+        disabled={passwordMutation.isPending}
         value={password}
         onChange={(event) => setPassword(event.target.value)}
       />
@@ -68,9 +69,21 @@ const PasswordStep = ({ username, secureWord, onNext }) => {
         </Box>
       )}
 
-      <Button type="submit" variant="contained" sx={{ marginTop: "40px" }}>
-        Next
-      </Button>
+      <Box
+        sx={{ marginTop: "40px", display: "flex", justifyContent: "center" }}
+      >
+        {passwordMutation.isPending && (
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <CircularProgress />
+          </Box>
+        )}
+
+        {!passwordMutation.isPending && (
+          <Button type="submit" variant="contained">
+            Next
+          </Button>
+        )}
+      </Box>
     </Box>
   );
 };

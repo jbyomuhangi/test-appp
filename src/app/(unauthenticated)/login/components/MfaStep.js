@@ -1,7 +1,7 @@
 "use client";
 
 import { OTP_EXPIRATION_TIME_IN_SECONDS } from "@/settings";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useInterval, useMount } from "react-use";
@@ -90,6 +90,7 @@ const MfaStep = ({ username, onNext }) => {
         size="small"
         placeholder="OTP"
         value={otpInput}
+        disabled={verifyMfaMutation.isPending}
         onChange={(event) => {
           if (event.target.value.length > 6) return;
           setOtpInput(event.target.value);
@@ -102,9 +103,21 @@ const MfaStep = ({ username, onNext }) => {
         </Box>
       )}
 
-      <Button type="submit" variant="contained" sx={{ marginTop: "40px" }}>
-        Next
-      </Button>
+      <Box
+        sx={{ marginTop: "40px", display: "flex", justifyContent: "center" }}
+      >
+        {verifyMfaMutation.isPending && (
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <CircularProgress />
+          </Box>
+        )}
+
+        {!verifyMfaMutation.isPending && (
+          <Button type="submit" variant="contained">
+            Next
+          </Button>
+        )}
+      </Box>
     </Box>
   );
 };
