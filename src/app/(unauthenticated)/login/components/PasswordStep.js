@@ -5,7 +5,13 @@ import { useMutation } from "@tanstack/react-query";
 import CryptoJS from "crypto-js";
 import { useState } from "react";
 
-const PasswordStep = ({ username, secureWord, onNext }) => {
+const PasswordStep = ({
+  secureWordTimeout,
+  username,
+  secureWord,
+  onNext,
+  onRetry,
+}) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
@@ -51,14 +57,21 @@ const PasswordStep = ({ username, secureWord, onNext }) => {
       onSubmit={handleSubmit}
     >
       <Box component="label" sx={{ marginBottom: "5px", fontWeight: "bold" }}>
-        Enter password:
+        Enter password
+        {secureWordTimeout && (
+          <Box component="span" sx={{ color: "red", fontSize: "12px" }}>
+            &nbsp; (time remaining {secureWordTimeout}s)
+          </Box>
+        )}
+        :
       </Box>
 
       <TextField
+        autoFocus
         size="small"
         placeholder="Password"
         type="password"
-        disabled={passwordMutation.isPending}
+        disabled={passwordMutation.isPending || !secureWordTimeout}
         value={password}
         onChange={(event) => setPassword(event.target.value)}
       />
@@ -78,10 +91,29 @@ const PasswordStep = ({ username, secureWord, onNext }) => {
           </Box>
         )}
 
-        {!passwordMutation.isPending && (
+        {!passwordMutation.isPending && secureWordTimeout > 0 && (
           <Button type="submit" variant="contained">
             Next
           </Button>
+        )}
+
+        {secureWordTimeout < 1 && (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <Box component="p" sx={{ color: "red", fontWeight: "bold" }}>
+              Secure word has expired. Please try again.
+            </Box>
+
+            <Button variant="contained" onClick={onRetry}>
+              Try again
+            </Button>
+          </Box>
         )}
       </Box>
     </Box>

@@ -1,8 +1,10 @@
 "use client";
 
 import FlexBox from "@/components/FlexBox";
+import { SECURE_WORD_EXPIRATION_TIME_IN_SECONDS } from "@/settings";
 import { Card } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useInterval } from "react-use";
 import MfaStep from "./components/MfaStep";
 import PasswordStep from "./components/PasswordStep";
 import SecureWordDisplayStep from "./components/SecureWordDisplayStep";
@@ -21,6 +23,23 @@ const Page = () => {
   const [step, setStep] = useState(stepsEnum.username);
   const [username, setUsername] = useState(null);
   const [secureWord, setSecureWord] = useState(null);
+  const [secureWordTimeout, setSecureWordTimeout] = useState(null);
+
+  /** Count down to let user know when the secure word will expire */
+  useInterval(
+    () => {
+      setSecureWordTimeout((prev) => prev - 1);
+    },
+    secureWordTimeout !== null ? 1000 : null
+  );
+
+  useEffect(() => {
+    const shouldStopCountdown =
+      secureWordTimeout === 0 ||
+      ![stepsEnum.secureWordDisplay, stepsEnum.password].includes(step);
+
+    if (shouldStopCountdown) setSecureWordTimeout(null);
+  }, [secureWordTimeout, step]);
 
   return (
     <FlexBox
@@ -35,6 +54,7 @@ const Page = () => {
               setUsername(username);
               setSecureWord(secureWord);
               setStep(stepsEnum.secureWordDisplay);
+              setSecureWordTimeout(SECURE_WORD_EXPIRATION_TIME_IN_SECONDS);
             }}
           />
         )}
@@ -42,15 +62,20 @@ const Page = () => {
         {step === stepsEnum.secureWordDisplay && (
           <SecureWordDisplayStep
             secureWord={secureWord}
+            secureWordTimeout={secureWordTimeout}
             onNext={() => setStep(stepsEnum.password)}
           />
         )}
 
         {step === stepsEnum.password && (
           <PasswordStep
+            secureWordTimeout={secureWordTimeout}
             username={username}
             secureWord={secureWord}
             onNext={() => setStep(stepsEnum.mfa)}
+            onRetry={() => {
+              setStep(stepsEnum.username);
+            }}
           />
         )}
 

@@ -1,24 +1,9 @@
 "use client";
 
 import FlexBox from "@/components/FlexBox";
-import { SECURE_WORD_EXPIRATION_TIME_IN_SECONDS } from "@/settings";
 import { Box, Button } from "@mui/material";
-import { useState } from "react";
-import { useInterval } from "react-use";
 
-const SecureWordDisplayStep = ({ secureWord, onNext }) => {
-  const [timeLeft, setTimeLeft] = useState(
-    SECURE_WORD_EXPIRATION_TIME_IN_SECONDS
-  );
-
-  /** Count down to let user know when the secure word will expire */
-  useInterval(
-    () => {
-      setTimeLeft((prev) => prev - 1);
-    },
-    timeLeft > 0 ? 1000 : null
-  );
-
+const SecureWordDisplayStep = ({ secureWord, secureWordTimeout, onNext }) => {
   return (
     <FlexBox>
       <Box
@@ -41,8 +26,10 @@ const SecureWordDisplayStep = ({ secureWord, onNext }) => {
           color: "red",
         }}
       >
-        {timeLeft > 0 && `This secure word will expire in ${timeLeft} seconds`}
-        {timeLeft < 1 && "This secure word has expired"}
+        {secureWordTimeout > 0 &&
+          `This secure word will expire in ${secureWordTimeout} seconds`}
+
+        {secureWordTimeout < 1 && "This secure word has expired"}
       </Box>
 
       <Box

@@ -14,7 +14,6 @@ const MfaStep = ({ username, onNext }) => {
 
   const createOtpMutation = useMutation({
     mutationFn: async ({ username }) => {
-      console.log("running mutation.....");
       const res = await fetch("/api/createOtp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

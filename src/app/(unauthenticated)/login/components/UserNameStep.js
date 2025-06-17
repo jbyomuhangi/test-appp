@@ -49,6 +49,7 @@ const UserNameStep = ({ onNext }) => {
       </Box>
 
       <TextField
+        autoFocus
         size="small"
         placeholder="Username"
         disabled={userNameMutation.isPending}
