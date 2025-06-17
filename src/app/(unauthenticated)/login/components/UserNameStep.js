@@ -17,12 +17,17 @@ const UserNameStep = ({ onNext }) => {
       });
 
       const { data, error } = await res.json();
-      if (error) throw new Error(error);
+      if (error) {
+        setError(error);
+        return;
+      }
 
       return data;
     },
 
     onSuccess: (secureWord) => {
+      if (!secureWord) return;
+
       onNext({ username, secureWord });
     },
 

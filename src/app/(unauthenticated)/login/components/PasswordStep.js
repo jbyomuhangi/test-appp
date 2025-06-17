@@ -28,12 +28,17 @@ const PasswordStep = ({
       });
 
       const { data, error } = await res.json();
-      if (error) throw new Error(error);
+      if (error) {
+        setError(error);
+        return;
+      }
 
       return data;
     },
 
-    onSuccess: () => {
+    onSuccess: (data) => {
+      if (!data) return;
+
       onNext();
     },
 

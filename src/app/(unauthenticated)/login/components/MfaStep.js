@@ -21,11 +21,12 @@ const MfaStep = ({ username, onNext }) => {
       });
 
       const { data, error } = await res.json();
-      if (error) throw new Error(error);
+      if (error) return;
       return data;
     },
 
     onSuccess: (data) => {
+      if (!data) return;
       setOtp(data);
     },
 
@@ -43,12 +44,17 @@ const MfaStep = ({ username, onNext }) => {
       });
 
       const { data, error } = await res.json();
-      if (error) throw new Error(error);
+      if (error) {
+        setError(error);
+        return;
+      }
 
       return data;
     },
 
     onSuccess: (data) => {
+      if (!data) return;
+
       localStorage.setItem("token", data);
       onNext();
     },
