@@ -1,4 +1,5 @@
 import NavBar from "@/components/NavBar";
+import { QueryProvider } from "@/components/Providers/QueryProvider";
 import theme from "@/theme";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
@@ -29,9 +30,11 @@ const RootLayout = ({ children }) => {
 
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
-            <NavBar />
+            <QueryProvider>
+              <NavBar />
 
-            {children}
+              {children}
+            </QueryProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>

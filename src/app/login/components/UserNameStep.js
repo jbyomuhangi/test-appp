@@ -1,16 +1,15 @@
 "use client";
 
 import { Box, Button, TextField } from "@mui/material";
-import React, { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 
 const UserNameStep = ({ onNext }) => {
   const [username, setUsername] = useState("");
   const [error, setError] = useState(null);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
+  const userNameMutation = useMutation({
+    mutationFn: async (username) => {
       const res = await fetch("/api/getSecureWord", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -18,15 +17,25 @@ const UserNameStep = ({ onNext }) => {
       });
 
       const { data, error } = await res.json();
+      if (error) throw new Error(error);
 
-      if (data) {
-        onNext({ username, secureWord: data });
-      } else {
-        setError(error);
-      }
-    } catch (error) {
+      return data;
+    },
+
+    onSuccess: (secureWord) => {
+      onNext({ username, secureWord });
+    },
+
+    onError: (error) => {
       setError(error.message || "Undefined error");
-    }
+    },
+  });
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (userNameMutation.isPending) return;
+    userNameMutation.mutate(username);
   };
 
   return (
