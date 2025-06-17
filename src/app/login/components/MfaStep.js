@@ -1,14 +1,41 @@
 "use client";
 
+import { OPT_EXPIRATION_TIME_IN_SECONDS } from "@/settings";
 import { Box, Button, TextField } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
-import React, { useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import React, { useEffect, useState } from "react";
+import { useInterval, useMount } from "react-use";
 
 const MfaStep = ({ username, onNext }) => {
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState();
+
+  const [otpInput, setOtpInput] = useState("");
   const [error, setError] = useState(null);
 
-  const mfaMutation = useMutation({
+  const createOptMutation = useMutation({
+    mutationFn: async ({ username }) => {
+      console.log("running mutation.....");
+      const res = await fetch("/api/createOpt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username }),
+      });
+
+      const { data, error } = await res.json();
+      if (error) throw new Error(error);
+      return data;
+    },
+
+    onSuccess: (data) => {
+      setOtp(data);
+    },
+
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  const verifyMfaMutation = useMutation({
     mutationFn: async ({ username, code }) => {
       const res = await fetch("/api/verifyMfa", {
         method: "POST",
@@ -31,11 +58,21 @@ const MfaStep = ({ username, onNext }) => {
     },
   });
 
+  /** Create an OTP on mount */
+  useMount(() => {
+    createOptMutation.mutate({ username });
+  });
+
+  /** Create a new OTP every OPT_EXPIRATION_TIME_IN_SECONDS */
+  useInterval(() => {
+    createOptMutation.mutate({ username });
+  }, 1000 * OPT_EXPIRATION_TIME_IN_SECONDS);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (mfaMutation.isPending) return;
+    if (verifyMfaMutation.isPending) return;
 
-    mfaMutation.mutate({ username, code: otp });
+    verifyMfaMutation.mutate({ username, code: otpInput });
   };
 
   return (
@@ -45,16 +82,16 @@ const MfaStep = ({ username, onNext }) => {
       onSubmit={handleSubmit}
     >
       <Box component="label" sx={{ marginBottom: "5px", fontWeight: "bold" }}>
-        Enter OTP:
+        Enter OTP: {otp}
       </Box>
 
       <TextField
         size="small"
         placeholder="OTP"
-        value={otp}
+        value={otpInput}
         onChange={(event) => {
           if (event.target.value.length > 6) return;
-          setOtp(event.target.value);
+          setOtpInput(event.target.value);
         }}
       />
 

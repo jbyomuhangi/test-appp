@@ -19,7 +19,7 @@ const roboto = Roboto({
 });
 
 export const metadata = {
-  title: "Orders App",
+  title: "Test App",
 };
 
 const RootLayout = ({ children }) => {

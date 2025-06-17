@@ -26,10 +26,9 @@ export const POST = async (request) => {
       );
     }
 
+    /** Check that the secure word is not expired */
     const now = Date.now();
     const timeLimit = 1000 * SECURE_WORD_EXPIRATION_TIME_IN_SECONDS;
-
-    /** Check that the secure word is not expired */
     if (now - lastRequest.issuedAt > timeLimit) {
       secureWordCache.delete(username);
       return NextResponse.json(
