@@ -92,6 +92,7 @@ const MfaStep = ({ username, onNext }) => {
       </Box>
 
       <TextField
+        autoFocus
         size="small"
         placeholder="OTP"
         value={otpInput}
