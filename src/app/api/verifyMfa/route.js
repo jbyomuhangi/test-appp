@@ -1,5 +1,5 @@
 import mfaCache from "@/mfaCache";
-import { OPT_EXPIRATION_TIME_IN_SECONDS, SECRET } from "@/settings";
+import { OTP_EXPIRATION_TIME_IN_SECONDS, SECRET } from "@/settings";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 
@@ -20,7 +20,7 @@ export async function POST(request) {
 
     /** Check that the otp is not expired */
     const now = Date.now();
-    const timeLimit = 1000 * OPT_EXPIRATION_TIME_IN_SECONDS;
+    const timeLimit = 1000 * OTP_EXPIRATION_TIME_IN_SECONDS;
     if (now - otpData.issuedAt > timeLimit) {
       mfaCache.delete(username);
       return NextResponse.json({ error: "Invalid OTP" }, { status: 400 });

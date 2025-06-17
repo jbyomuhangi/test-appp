@@ -1,6 +1,6 @@
 "use client";
 
-import { OPT_EXPIRATION_TIME_IN_SECONDS } from "@/settings";
+import { OTP_EXPIRATION_TIME_IN_SECONDS } from "@/settings";
 import { Box, Button, TextField } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
@@ -64,10 +64,10 @@ const MfaStep = ({ username, onNext }) => {
     createOptMutation.mutate({ username });
   });
 
-  /** Create a new OTP every OPT_EXPIRATION_TIME_IN_SECONDS */
+  /** Create a new OTP every OTP_EXPIRATION_TIME_IN_SECONDS */
   useInterval(() => {
     createOptMutation.mutate({ username });
-  }, 1000 * OPT_EXPIRATION_TIME_IN_SECONDS);
+  }, 1000 * OTP_EXPIRATION_TIME_IN_SECONDS);
 
   const handleSubmit = (event) => {
     event.preventDefault();

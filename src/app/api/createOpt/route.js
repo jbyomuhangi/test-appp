@@ -1,5 +1,5 @@
 import mfaCache from "@/mfaCache";
-import { OPT_EXPIRATION_TIME_IN_SECONDS, SECRET } from "@/settings";
+import { OTP_EXPIRATION_TIME_IN_SECONDS, SECRET } from "@/settings";
 import CryptoJS from "crypto-js";
 import { NextResponse } from "next/server";
 
@@ -14,7 +14,7 @@ export async function POST(request) {
 
     const timeStamp = Date.now();
     const lastRequest = mfaCache.get(username);
-    const timeLimit = 1000 * OPT_EXPIRATION_TIME_IN_SECONDS;
+    const timeLimit = 1000 * OTP_EXPIRATION_TIME_IN_SECONDS;
 
     /** Check that we have not hit our rate limit for requests yet since the last request */
     if (lastRequest && timeStamp - lastRequest.issuedAt < timeLimit) {
