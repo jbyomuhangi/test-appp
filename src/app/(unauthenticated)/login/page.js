@@ -83,6 +83,9 @@ const Page = () => {
           <MfaStep
             username={username}
             onNext={() => setStep(stepsEnum.success)}
+            onRetry={() => {
+              setStep(stepsEnum.username);
+            }}
           />
         )}
 

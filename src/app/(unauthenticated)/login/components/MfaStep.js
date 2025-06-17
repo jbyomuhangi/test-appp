@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useInterval, useMount } from "react-use";
 
-const MfaStep = ({ username, onNext }) => {
+const MfaStep = ({ username, onNext, onRetry }) => {
   const [otp, setOtp] = useState();
 
   const [otpInput, setOtpInput] = useState("");
@@ -81,6 +81,8 @@ const MfaStep = ({ username, onNext }) => {
     verifyMfaMutation.mutate({ username, code: otpInput });
   };
 
+  const isAttemptLimitReached = error === "Attempt limit reached";
+
   return (
     <Box
       component="form"
@@ -118,9 +120,15 @@ const MfaStep = ({ username, onNext }) => {
           </Box>
         )}
 
-        {!verifyMfaMutation.isPending && (
+        {!verifyMfaMutation.isPending && !isAttemptLimitReached && (
           <Button type="submit" variant="contained">
             Next
+          </Button>
+        )}
+
+        {isAttemptLimitReached && (
+          <Button variant="contained" onClick={onRetry}>
+            Try again
           </Button>
         )}
       </Box>
