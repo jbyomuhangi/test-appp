@@ -1,4 +1,4 @@
-import { secureWordCache } from "@/caches";
+import { deleteSecureWord, getSecureWord } from "@/caches";
 import { SECRET, SECURE_WORD_EXPIRATION_TIME_IN_SECONDS } from "@/settings";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
@@ -13,7 +13,7 @@ export const POST = async (request) => {
     }
 
     /** Check that we have a secure word in the request map */
-    const lastRequest = secureWordCache.get(username);
+    const lastRequest = getSecureWord(username);
     if (!lastRequest) {
       return NextResponse.json({ error: "Bad request" }, { status: 400 });
     }
@@ -30,7 +30,7 @@ export const POST = async (request) => {
     const now = Date.now();
     const timeLimit = 1000 * SECURE_WORD_EXPIRATION_TIME_IN_SECONDS;
     if (now - lastRequest.issuedAt > timeLimit) {
-      secureWordCache.delete(username);
+      deleteSecureWord(username);
       return NextResponse.json(
         { error: "The secure word is expired" },
         { status: 400 }

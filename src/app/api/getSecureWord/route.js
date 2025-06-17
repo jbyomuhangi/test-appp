@@ -1,4 +1,4 @@
-import { secureWordCache } from "@/caches";
+import { getSecureWord, setSecureWord } from "@/caches";
 import { SECRET, SECURE_WORD_REQUEST_RATE_LIMIT_IN_SECONDS } from "@/settings";
 import CryptoJS from "crypto-js";
 import { NextResponse } from "next/server";
@@ -16,7 +16,7 @@ export const POST = async (request) => {
     }
 
     const timeStamp = Date.now();
-    const lastRequest = secureWordCache.get(username);
+    const lastRequest = getSecureWord(username);
     const timeLimit = 1000 * SECURE_WORD_REQUEST_RATE_LIMIT_IN_SECONDS;
 
     /** Check that we have not hit our rate limit for requests yet since the last request */
@@ -35,7 +35,7 @@ export const POST = async (request) => {
     ).toString();
 
     /** Store the secure word in the request map using the username as the key */
-    secureWordCache.set(username, {
+    setSecureWord(username, {
       username,
       secureWord,
       issuedAt: timeStamp,

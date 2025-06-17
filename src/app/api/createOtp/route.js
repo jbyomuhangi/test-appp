@@ -1,4 +1,4 @@
-import { mfaCache } from "@/caches";
+import { getMfa, setMfa } from "@/caches";
 import { OTP_EXPIRATION_TIME_IN_SECONDS, SECRET } from "@/settings";
 import CryptoJS from "crypto-js";
 import { NextResponse } from "next/server";
@@ -13,7 +13,7 @@ export async function POST(request) {
     }
 
     const timeStamp = Date.now();
-    const lastRequest = mfaCache.get(username);
+    const lastRequest = getMfa(username);
     const timeLimit = 1000 * OTP_EXPIRATION_TIME_IN_SECONDS;
 
     /** Check that we have not hit our rate limit for requests yet since the last request */
@@ -31,7 +31,7 @@ export async function POST(request) {
       .slice(0, 6);
 
     /** Store the otp in the request map using the username as the key */
-    mfaCache.set(username, {
+    setMfa(username, {
       username,
       otp,
       issuedAt: timeStamp,

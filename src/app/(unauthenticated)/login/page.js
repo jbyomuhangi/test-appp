@@ -41,15 +41,6 @@ const Page = () => {
     if (shouldStopCountdown) setSecureWordTimeout(null);
   }, [secureWordTimeout, step]);
 
-  /** Attempt to "warm" our api routes */
-  useEffect(() => {
-    fetch("/api/verifyMfa", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: "test", code: "123456" }),
-    }).catch(() => {});
-  }, []);
-
   return (
     <FlexBox
       BoxProps={{
