@@ -25,7 +25,7 @@ const RootLayout = ({ children }) => {
   return (
     <html lang="en" className={roboto.variable}>
       <body>
-        <NextTopLoader />
+        <NextTopLoader showSpinner={false} />
 
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
