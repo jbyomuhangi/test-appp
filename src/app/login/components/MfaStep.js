@@ -50,7 +50,8 @@ const MfaStep = ({ username, onNext }) => {
     },
 
     onSuccess: (data) => {
-      console.log("data", data);
+      localStorage.setItem("token", data);
+      onNext();
     },
 
     onError: (error) => {

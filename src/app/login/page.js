@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import MfaStep from "./components/MfaStep";
 import PasswordStep from "./components/PasswordStep";
 import SecureWordDisplayStep from "./components/SecureWordDisplayStep";
+import SuccessStep from "./components/SuccessStep";
 import UserNameStep from "./components/UserNameStep";
 
 const stepsEnum = {
@@ -13,6 +14,7 @@ const stepsEnum = {
   secureWordDisplay: "secureWordDisplay",
   password: "password",
   mfa: "mfa",
+  success: "success",
 };
 
 const Page = () => {
@@ -55,10 +57,11 @@ const Page = () => {
         {step === stepsEnum.mfa && (
           <MfaStep
             username={username}
-            // secureWord={secureWord}
-            // onNext={() => setStep(stepsEnum.success)}
+            onNext={() => setStep(stepsEnum.success)}
           />
         )}
+
+        {step === stepsEnum.success && <SuccessStep />}
       </Card>
     </FlexBox>
   );
